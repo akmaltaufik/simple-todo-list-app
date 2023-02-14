@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To Do App</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div><h1>To Do List</h1></div>
+    <input type="text" id="judul-tugas" />
+    <input type="date" id="pick-tanggal" />
+    <button onclick="tambahList()">Tambahkan tugas</button>
+    <div id="list-tugas"></div>
+
+    <script>
+      let arrayTugas = [
+        {
+          judul: "latihan js",
+          dueDate: "2023-02-12",
+          id: "id1",
+        },
+        {
+          judul: "portfolio bootstrap",
+          dueDate: "2023-02-12",
+          id: "id2",
+        },
+      ];
+
+      render();
+
+      function tambahList() {
+        const textbox = document.getElementById("judul-tugas");
+        const tugasBaru = textbox.value;
+
+        const datePicker = document.getElementById("pick-tanggal");
+        const dueDate = datePicker.value;
+
+        const id = "" + new Date().getTime();
+
+        arrayTugas.push({
+          judul: tugasBaru,
+          dueDate: dueDate,
+          id: id,
+        });
+
+        render();
+      }
+
+      function hapusTugas(event) {
+        const deleteButton = event.target;
+        const idToDelete = deleteButton.id;
+
+        arrayTugas = arrayTugas.filter(function (tugas) {
+          if (tugas.id === idToDelete) {
+            return false;
+          } else {
+            return true;
+          }
+        });
+
+        render();
+      }
+
+      function render() {
+        // reset list
+        document.getElementById("list-tugas").innerHTML = "";
+
+        arrayTugas.forEach(function (tugas) {
+          const element = document.createElement("div");
+          element.innerText = tugas.judul + " : " + tugas.dueDate;
+
+          const deleteButton = document.createElement("button");
+          deleteButton.innerText = "hapus";
+          //   deleteButton.style = "margin-left: 16px";
+          deleteButton.onclick = hapusTugas;
+          deleteButton.id = tugas.id;
+          element.appendChild(deleteButton);
+
+          const listTugas = document.getElementById("list-tugas");
+          listTugas.appendChild(element);
+        });
+      }
+    </script>
+  </body>
+</html>
